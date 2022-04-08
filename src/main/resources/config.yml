@@ -1,0 +1,22 @@
+prefix: ' &8&l[&6&l亘古大陆&8&l] &7'
+put-count:
+  sell:
+    mvp: 10
+    svp: 8
+    default: 5
+  buy:
+    mvp: 10
+    svp: 8
+    default: 5
+put-day:
+  sell:
+    mvp: 30
+    svp: 15
+    default: 7
+  buy:
+    mvp: 30
+    svp: 15
+    default: 7
+service-charge:
+  sell: 0.05
+  buy: 0.05

@@ -1,0 +1,21 @@
+name: JustMarket
+main: net.sakuragame.eternal.justmarket.JustMarket
+version: ${project.version}
+author: 'Megumi'
+api-version: '1.13'
+depend:
+  - MegumiLib
+  - DataManager
+  - GemsEconomy
+  - DragonCore
+  - UIFactory
+  - JustAttribute
+  - JustMessage
+  - MailSystem
+  - Zaphkiel
+
+commands:
+  jmarket:
+    aliases:
+      - market
+    description: show all command
