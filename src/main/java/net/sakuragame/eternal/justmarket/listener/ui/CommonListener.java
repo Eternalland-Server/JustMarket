@@ -341,9 +341,10 @@ public class CommonListener implements Listener {
     private void sendUnshelveSuccessStyle(Player player, UUID uuid) {
         String code = Utils.getUUIDPart(uuid);
         PacketSender.sendRunFunction(player, MarketUIManager.MANAGE_UI_ID, new Statements()
+                        .add("func.Component_Set('c_" + code + "', 'texture', '0,0,0,0');")
                         .add("func.Component_Set('c_" + code + "', 'actions.click_left', '');")
                         .add("func.Component_Set('c_" + code + "', 'actions.release_left', '');")
-                        .add("func.Component_Set('c_" + code + "', 'text', '&6&l下架成功');")
+                        .add("func.Component_Set('c_" + code + "', 'text', '&c&l已下架');")
                         .build(),
                 false
         );
