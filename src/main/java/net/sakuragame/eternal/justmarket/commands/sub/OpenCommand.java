@@ -19,6 +19,7 @@ public class OpenCommand extends SubCommand {
         if (args.length < 1) return;
 
         Player player = Bukkit.getPlayerExact(args[0]);
+        if (player == null) return;
         UserView view = JustMarket.getUserManager().getCache(player);
         view.open();
     }
