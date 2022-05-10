@@ -297,6 +297,7 @@ public class CommonListener implements Listener {
             player.sendMessage(ConfigFile.prefix + "你需要 §a" + price + "(+" + serviceCharge + "手续费) §7金币才能上架求购");
             return;
         }
+        GemsEconomyAPI.withdraw(player.getUniqueId(), price + serviceCharge);
 
         int amount = Integer.parseInt(s2);
 
