@@ -30,7 +30,16 @@ public class Utils {
     }
 
     public static String formatPrice(double price) {
-        return FORMAT.format(price);
+        String s = FORMAT.format(price);
+        String c = "&f";
+
+        if (price >= 1000000d) c = "&a";
+        if (price >= 10000000d) c = "&b";
+        if (price >= 100000000d) c = "&5";
+        if (price >= 1000000000d) c = "&6";
+        if (price >= 10000000000d) c = "&e";
+
+        return c + s;
     }
 
     public static String formatExpire(long expire) {
