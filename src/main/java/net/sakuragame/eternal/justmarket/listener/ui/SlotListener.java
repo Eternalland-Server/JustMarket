@@ -1,6 +1,7 @@
 package net.sakuragame.eternal.justmarket.listener.ui;
 
 import com.sakuragame.eternal.justattribute.core.soulbound.SoulBound;
+import net.sakuragame.eternal.dragoncore.api.event.PlayerSlotUpdateEvent;
 import net.sakuragame.eternal.justmarket.core.commodity.CommodityType;
 import net.sakuragame.eternal.justmarket.ui.MarketUIManager;
 import net.sakuragame.eternal.justmarket.ui.SlotCache;
@@ -10,6 +11,7 @@ import com.taylorswiftcn.megumi.uifactory.event.screen.UIFScreenCloseEvent;
 import net.sakuragame.eternal.dragoncore.api.event.slot.PlayerSlotClickEvent;
 import net.sakuragame.eternal.dragoncore.network.PacketSender;
 import net.sakuragame.eternal.justmessage.api.MessageAPI;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -43,7 +45,7 @@ public class SlotListener implements Listener {
                 identifier.equals(MarketUIManager.SELL_SLOT))
         ) return;
 
-        String gui = identifier.equals(MarketUIManager.SELL_SLOT) ? MarketUIManager.PUT_SELL_UI_ID : MarketUIManager.PUT_BUY_UI_ID;
+
         if (!MegumiUtil.isEmpty(handItem)) {
             CommodityType type = Utils.getCommodityType(handItem);
             if (type == null) {
@@ -59,15 +61,31 @@ public class SlotListener implements Listener {
             }
 
             e.setSlotItem(SlotCache.removeSlot(player, identifier));
-            SlotCache.putSlot(player, identifier, handItem);
-
-            String name = handItem.getItemMeta().getDisplayName();
-            this.setCommodityName(player, gui, name);
             return;
         }
 
-        this.setCommodityName(player, gui, "&9商品名称");
         e.setSlotItem(SlotCache.removeSlot(player, identifier));
+    }
+
+    @EventHandler
+    public void onUpdate(PlayerSlotUpdateEvent e) {
+        Player player = e.getPlayer();
+        String identifier = e.getIdentifier();
+        ItemStack item = e.getItemStack();
+
+        if (!(identifier.equals(MarketUIManager.BUY_SLOT) ||
+                identifier.equals(MarketUIManager.SELL_SLOT))
+        ) return;
+
+        String gui = identifier.equals(MarketUIManager.SELL_SLOT) ? MarketUIManager.PUT_SELL_UI_ID : MarketUIManager.PUT_BUY_UI_ID;
+        if (item.getType() != Material.AIR) {
+            SlotCache.putSlot(player, identifier, item);
+
+            String name = item.getItemMeta().getDisplayName();
+            this.setCommodityName(player, gui, name);
+        }
+
+        this.setCommodityName(player, gui, "&9商品名称");
     }
 
     private void setCommodityName(Player player, String gui, String name) {

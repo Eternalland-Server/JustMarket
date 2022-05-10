@@ -138,7 +138,7 @@ public class CommonListener implements Listener {
         int uid = ClientManagerAPI.getUserID(player.getUniqueId());
         UUID uuid = UUID.fromString(params.getParam(1));
 
-        Commodity commodity = JustMarket.getTradeManager().getCommodity(uuid, TradeType.Sell);
+        Commodity commodity = JustMarket.getTradeManager().getCommodity(uuid, TradeType.Buy);
         if (commodity.getTrader() == uid) {
             MessageAPI.sendActionTip(player, "&a&l你不能交易自己的商品");
             return;
