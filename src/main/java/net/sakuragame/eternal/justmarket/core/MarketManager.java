@@ -144,14 +144,14 @@ public class MarketManager implements TradeManager {
     }
 
     @Override
-    public void removeCommodity(UUID uuid, TradeType tradeType) {
+    public Commodity removeCommodity(UUID uuid, TradeType tradeType) {
         switch (tradeType) {
             case Sell:
-                this.sellMap.remove(uuid);
-                return;
+                return this.sellMap.remove(uuid);
             case Buy:
-                this.buyMap.remove(uuid);
+                return this.buyMap.remove(uuid);
         }
+        return null;
     }
 
     @Override

@@ -1,5 +1,6 @@
 package net.sakuragame.eternal.justmarket.core.user;
 
+import net.sakuragame.eternal.gemseconomy.api.GemsEconomyAPI;
 import net.sakuragame.eternal.justmarket.JustMarket;
 import net.sakuragame.eternal.justmarket.core.TradeType;
 import net.sakuragame.eternal.justmarket.core.commodity.Commodity;
@@ -8,6 +9,7 @@ import net.sakuragame.eternal.justmarket.file.sub.ConfigFile;
 import net.sakuragame.eternal.justmarket.util.MailNotify;
 import net.sakuragame.eternal.mail.api.model.AnnexData;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;
@@ -75,26 +77,30 @@ public class MarketAccount {
     }
 
     public boolean unShelveSellCommodity(UUID uuid) {
+        if (JustMarket.getTradeManager().isSellLock(uuid)) return false;
         if (!this.sell.remove(uuid)) return false;
-        if (JustMarket.getTradeManager().isSellLock(uuid)) {
-            return false;
-        }
 
+        Commodity commodity = JustMarket.getTradeManager().removeCommodity(uuid, TradeType.Sell);
         JustMarket.getStorageManager().deleteSellCommodity(uuid);
-        JustMarket.getTradeManager().removeCommodity(uuid, TradeType.Sell);
         JustMarket.getUpdater().delCommodity(uuid, TradeType.Sell);
+
+        Player player = Bukkit.getPlayer(this.uuid);
+        player.getInventory().addItem(commodity.getItemStack());
+        player.sendMessage(ConfigFile.prefix + "§7下架成功！物品已反还至你的背包");
         return true;
     }
 
     public boolean unShelveBuyCommodity(UUID uuid) {
+        if (JustMarket.getTradeManager().isBuyLock(uuid)) return false;
         if (!this.buy.remove(uuid)) return false;
-        if (JustMarket.getTradeManager().isBuyLock(uuid)) {
-            return false;
-        }
 
+        Commodity commodity = JustMarket.getTradeManager().removeCommodity(uuid, TradeType.Buy);
         JustMarket.getStorageManager().deleteBuyCommodity(uuid);
-        JustMarket.getTradeManager().removeCommodity(uuid, TradeType.Buy);
         JustMarket.getUpdater().delCommodity(uuid, TradeType.Buy);
+
+        Player player = Bukkit.getPlayer(this.uuid);
+        GemsEconomyAPI.deposit(this.uuid, commodity.getPrice());
+        player.sendMessage(ConfigFile.prefix + "§7下架成功！押金(§a" + commodity.getPrice() + "金币§7)已反还至你的账户");
         return true;
     }
 
@@ -114,11 +120,10 @@ public class MarketAccount {
     }
 
     public void handleExpireCommodity() {
-        this.sell.forEach(Key -> {
-            Commodity commodity = JustMarket.getTradeManager().getCommodity(Key, TradeType.Sell);
+        this.sell.forEach(key -> {
+            Commodity commodity = JustMarket.getTradeManager().getCommodity(key, TradeType.Sell);
             if (commodity.isExpire()) {
-                JustMarket.getStorageManager().deleteSellCommodity(Key);
-                JustMarket.getTradeManager().removeCommodity(Key, TradeType.Sell);
+                this.unShelveSellCommodity(key);
                 MailNotify.sendSellFailure(this.uuid, new AnnexData(commodity.getItemID(), commodity.getAmount(), commodity.getItemData()));
             }
         });
@@ -126,8 +131,7 @@ public class MarketAccount {
         this.buy.forEach(key -> {
             Commodity commodity = JustMarket.getTradeManager().getCommodity(key, TradeType.Buy);
             if (commodity.isExpire()) {
-                JustMarket.getStorageManager().deleteBuyCommodity(key);
-                JustMarket.getTradeManager().removeCommodity(key, TradeType.Buy);
+                this.unShelveBuyCommodity(key);
                 MailNotify.sendBuyFailure(this.uuid, commodity.getItemID(), commodity.getAmount(), (int) commodity.getPrice());
             }
         });

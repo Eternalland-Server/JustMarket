@@ -317,7 +317,6 @@ public class CommonListener implements Listener {
 
         MarketAccount account = JustMarket.getUserManager().getAccount(player);
         if (account.unShelveSellCommodity(uuid)) {
-            player.sendMessage(ConfigFile.prefix + "下架成功");
             this.sendUnshelveSuccessStyle(player, uuid);
         }
         else {

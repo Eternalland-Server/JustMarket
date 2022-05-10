@@ -29,7 +29,7 @@ public interface TradeManager {
 
     void loadCommodity(UUID uuid, TradeType tradeType);
 
-    void removeCommodity(UUID uuid, TradeType tradeType);
+    Commodity removeCommodity(UUID uuid, TradeType tradeType);
 
     void loadTradeRecord(UUID uuid);
 
