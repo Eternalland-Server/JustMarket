@@ -98,8 +98,8 @@ public class MarketUIManager implements ScreenManager {
         CommodityShelf shelf = new TradeShelf(commodities, tradeType);
         shelf.send(player);
 
-        placeholder.put("market_current_page", (current + 1) + "");
-        placeholder.put("market_max_page", totalPage + "");
+        placeholder.put("market_current_page", current + "");
+        placeholder.put("market_max_page", (totalPage + 1) + "");
         placeholder.put("market_sort_1", sort.getUPSortTexture());
         placeholder.put("market_sort_2", sort.getTPSortTexture());
 
@@ -117,8 +117,8 @@ public class MarketUIManager implements ScreenManager {
         int current = result.getCurrent();
         int totalPage = result.getTotal();
 
-        placeholder.put("market_current_page", (current + 1) + "");
-        placeholder.put("market_max_page", totalPage + "");
+        placeholder.put("market_current_page", current + "");
+        placeholder.put("market_max_page", (totalPage + 1) + "");
         placeholder.put("market_sort_1", sort.getUPSortTexture());
         placeholder.put("market_sort_2", sort.getTPSortTexture());
 
@@ -162,8 +162,8 @@ public class MarketUIManager implements ScreenManager {
         int current = result.getCurrent();
         int totalPage = result.getTotal();
 
-        placeholder.put("market_current_page", (current + 1) + "");
-        placeholder.put("market_max_page", totalPage + "");
+        placeholder.put("market_current_page", current + "");
+        placeholder.put("market_max_page", (totalPage + 1) + "");
 
         List<Commodity> commodities = result.getCommodities();
         if (commodities.size() == 0) {

@@ -55,6 +55,6 @@ public class SortUtils {
         int from = current * COUNT_OF_PAGE;
         int to = (page > total) ? size : Math.min((page + 1) * COUNT_OF_PAGE, size);
 
-        return new PageResult(current, to, new ArrayList<>(commodities.subList(from, to)));
+        return new PageResult(current + 1, total, new ArrayList<>(commodities.subList(from, to)));
     }
 }
