@@ -1,6 +1,7 @@
 package net.sakuragame.eternal.justmarket.core.commodity;
 
 import com.google.gson.JsonObject;
+import com.sakuragame.eternal.justattribute.core.special.EquipQuality;
 import net.sakuragame.eternal.justmarket.JustMarket;
 import net.sakuragame.eternal.justmarket.core.user.MarketAccount;
 import net.sakuragame.eternal.justmarket.util.Utils;
@@ -86,7 +87,13 @@ public abstract class Commodity implements Comparable<Commodity> {
         Item item = ZaphkielAPI.INSTANCE.getRegisteredItem().get(this.getItemID());
         if (item == null) return "";
 
-        return item.getName().get("NAME");
+        String name = item.getName().get("NAME");
+        if (type == CommodityType.Clothes) {
+            EquipQuality quality = EquipQuality.getQuality(item.buildItemStack(null));
+            return name + "&7(" + quality.getName() + ")";
+        }
+
+        return name;
     }
 
     public abstract void saveToDB();

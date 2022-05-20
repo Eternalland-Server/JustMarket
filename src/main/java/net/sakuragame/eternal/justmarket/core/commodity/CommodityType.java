@@ -13,6 +13,7 @@ public enum CommodityType {
     Equip(0, "装备"),
     Pet(1, "宠物"),
     Ore(2, "矿石"),
+    Clothes(3, "时装"),
     Mine_Sell(100, "我的出售"),
     Mine_Buy(101, "我的求购"),
     Put_Sell(200, "上架商品"),
