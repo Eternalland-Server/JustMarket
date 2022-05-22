@@ -10,10 +10,10 @@ import java.util.List;
 public enum CommodityType {
 
     ALL(-1, "全部"),
-    Equip(0, "装备"),
-    Pet(1, "宠物"),
+    Equip(0, "装备", true),
+    Pet(1, "宠物", true),
     Ore(2, "矿石"),
-    Clothes(3, "时装"),
+    Clothes(3, "时装", true),
     Mine_Sell(100, "我的出售"),
     Mine_Buy(101, "我的求购"),
     Put_Sell(200, "上架商品"),
@@ -22,11 +22,20 @@ public enum CommodityType {
     private final int ID;
     private final String name;
 
+    private final boolean needSeal;
+
     public final static String NBT_NODE = "market.type";
 
     CommodityType(int ID, String name) {
         this.ID = ID;
         this.name = name;
+        this.needSeal = false;
+    }
+
+    CommodityType(int ID, String name, boolean needSeal) {
+        this.ID = ID;
+        this.name = name;
+        this.needSeal = needSeal;
     }
 
     public static CommodityType match(int id) {

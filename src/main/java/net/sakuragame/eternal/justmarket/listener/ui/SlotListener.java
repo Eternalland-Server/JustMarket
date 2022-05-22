@@ -54,7 +54,7 @@ public class SlotListener implements Listener {
                 return;
             }
 
-            if (type == CommodityType.Equip && !SoulBound.isSeal(handItem)) {
+            if (type.isNeedSeal() && !SoulBound.isSeal(handItem)) {
                 MessageAPI.sendActionTip(player, "&c&l该物品需要在铁匠铺 &6&l封印 &c&l后才能上架");
                 e.setCancelled(true);
                 return;
