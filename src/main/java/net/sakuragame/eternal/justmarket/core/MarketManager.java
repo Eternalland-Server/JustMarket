@@ -292,7 +292,7 @@ public class MarketManager implements TradeManager {
         MarketAccount account = JustMarket.getUserManager().getAccount(uuid);
 
         ItemStream itemStream = ZaphkielAPI.INSTANCE.read(item);
-        String itemID = itemStream.getZaphkielItem().getId();
+        String itemID = itemStream.getZaphkielName();
         int amount = item.getAmount();
         String itemData = itemStream.getZaphkielData().toJson();
         CommodityType type = Utils.getCommodityType(itemStream);
