@@ -63,6 +63,7 @@ public enum CommodityType {
             add(Equip);
             add(Pet);
             add(Ore);
+            add(Clothes);
         }};
     }
 
@@ -71,6 +72,7 @@ public enum CommodityType {
             add(ALL);
             add(Pet);
             add(Ore);
+            add(Clothes);
         }};
     }
 
