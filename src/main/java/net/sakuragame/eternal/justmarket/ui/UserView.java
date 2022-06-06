@@ -122,13 +122,13 @@ public class UserView implements ScreenView {
                 return;
         }
 
-        this.page = JustMarket.getScreenManager().sendViewByCommodity(
+        this.page = Math.max(0, JustMarket.getScreenManager().sendViewByCommodity(
                 this.getBukkitPlayer(),
                 this.topCategory,
                 this.leftCategory,
                 this.sort,
                 page
-        ) - 1;
+        ) - 1);
     }
 
     @Override
@@ -140,40 +140,40 @@ public class UserView implements ScreenView {
     public void open(String search, int page) {
         this.searchCache = search;
 
-        this.page = JustMarket.getScreenManager().sendViewBySearch(
+        this.page = Math.max(0, JustMarket.getScreenManager().sendViewBySearch(
                 this.getBukkitPlayer(),
                 this.searchCache,
                 this.topCategory,
                 this.sort,
                 page
-        ) - 1;
+        ) - 1);
     }
 
     @Override
     public void openManage() {
         this.topCategory = TradeType.Mine;
-        this.page = JustMarket.getScreenManager().sendManageView(
+        this.page = Math.max(0, JustMarket.getScreenManager().sendManageView(
                 this.getBukkitPlayer(),
                 TradeType.Sell
-        ) - 1;
+        ) - 1);
     }
 
     @Override
     public void openSellManage(int page) {
-        this.page = JustMarket.getScreenManager().sendManageView(
+        this.page = Math.max(0, JustMarket.getScreenManager().sendManageView(
                 this.getBukkitPlayer(),
                 TradeType.Sell,
                 page
-        ) - 1;
+        ) - 1);
     }
 
     @Override
     public void openBuyManage(int page) {
-        this.page = JustMarket.getScreenManager().sendManageView(
+        this.page = Math.max(0, JustMarket.getScreenManager().sendManageView(
                 this.getBukkitPlayer(),
                 TradeType.Buy,
                 page
-        ) - 1;
+        ) - 1);
     }
 
     @Override
