@@ -129,7 +129,6 @@ public class UserView implements ScreenView {
                 this.sort,
                 page
         ) - 1;
-        this.getBukkitPlayer().sendMessage("current page: " + this.page);
     }
 
     @Override
