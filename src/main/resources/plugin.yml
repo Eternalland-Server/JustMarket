@@ -5,7 +5,7 @@ author: 'Megumi'
 api-version: '1.13'
 depend:
   - MegumiLib
-  - datamanager-bukkit-parent
+  - DataManager
   - GemsEconomy
   - DragonCore
   - UIFactory
