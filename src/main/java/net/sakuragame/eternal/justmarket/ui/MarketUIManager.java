@@ -111,6 +111,10 @@ public class MarketUIManager implements ScreenManager {
 
     @Override
     public int sendViewByCommodity(Player player, TradeType tradeType, CommodityType commodityType, SortCondition sort, int page) {
+        player.sendMessage("trade type: " + tradeType.name());
+        player.sendMessage("commodity type: " + commodityType.getName());
+        player.sendMessage("sort: " + sort.name());
+        player.sendMessage("page: " + page);
         Map<String, String> placeholder = new HashMap<>();
 
         PageResult result = JustMarket.getTradeManager().getCommodity(tradeType, commodityType, sort, page);
@@ -123,6 +127,7 @@ public class MarketUIManager implements ScreenManager {
         placeholder.put("market_sort_2", sort.getTPSortTexture());
 
         List<Commodity> commodities = result.getCommodities();
+        player.sendMessage("commodity size: " + commodities.size());
         if (commodities.size() == 0) {
             CommodityShelf.clear(player);
             PacketSender.sendSyncPlaceholder(player, placeholder);

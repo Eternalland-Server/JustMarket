@@ -128,7 +128,8 @@ public class UserView implements ScreenView {
                 this.leftCategory,
                 this.sort,
                 page
-        );
+        ) - 1;
+        this.getBukkitPlayer().sendMessage("current page: " + this.page);
     }
 
     @Override
@@ -146,7 +147,7 @@ public class UserView implements ScreenView {
                 this.topCategory,
                 this.sort,
                 page
-        );
+        ) - 1;
     }
 
     @Override
@@ -155,7 +156,7 @@ public class UserView implements ScreenView {
         this.page = JustMarket.getScreenManager().sendManageView(
                 this.getBukkitPlayer(),
                 TradeType.Sell
-        );
+        ) - 1;
     }
 
     @Override
@@ -164,7 +165,7 @@ public class UserView implements ScreenView {
                 this.getBukkitPlayer(),
                 TradeType.Sell,
                 page
-        );
+        ) - 1;
     }
 
     @Override
@@ -173,7 +174,7 @@ public class UserView implements ScreenView {
                 this.getBukkitPlayer(),
                 TradeType.Buy,
                 page
-        );
+        ) - 1;
     }
 
     @Override
