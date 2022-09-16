@@ -2,6 +2,8 @@ package net.sakuragame.eternal.justmarket.core.user;
 
 import net.sakuragame.eternal.gemseconomy.api.GemsEconomyAPI;
 import net.sakuragame.eternal.justmarket.JustMarket;
+import net.sakuragame.eternal.justmarket.api.event.MarketCommodityExpiredEvent;
+import net.sakuragame.eternal.justmarket.api.event.MarketUnshelveEvent;
 import net.sakuragame.eternal.justmarket.core.TradeType;
 import net.sakuragame.eternal.justmarket.core.commodity.Commodity;
 import net.sakuragame.eternal.justmarket.core.record.TradeRecord;
@@ -87,6 +89,10 @@ public class MarketAccount {
         Player player = Bukkit.getPlayer(this.uuid);
         player.getInventory().addItem(commodity.getItemStack());
         player.sendMessage(ConfigFile.prefix + "§7下架成功！物品已反还至你的背包");
+
+        MarketUnshelveEvent event = new MarketUnshelveEvent(player, commodity);
+        event.call();
+
         return true;
     }
 
@@ -101,6 +107,10 @@ public class MarketAccount {
         Player player = Bukkit.getPlayer(this.uuid);
         GemsEconomyAPI.deposit(this.uuid, commodity.getPrice());
         player.sendMessage(ConfigFile.prefix + "§7下架成功！押金(§a" + commodity.getPrice() + "金币§7)已反还至你的账户");
+
+        MarketUnshelveEvent event = new MarketUnshelveEvent(player, commodity);
+        event.call();
+
         return true;
     }
 
@@ -124,6 +134,7 @@ public class MarketAccount {
             Commodity commodity = JustMarket.getTradeManager().getCommodity(key, TradeType.Sell);
             if (commodity.isExpire()) {
                 this.unShelveSellCommodity(key);
+                new MarketCommodityExpiredEvent(Bukkit.getPlayer(this.uuid), commodity);
                 MailNotify.sendSellFailure(this.uuid, new AnnexData(commodity.getItemID(), commodity.getAmount(), commodity.getItemData()));
             }
         });
@@ -132,6 +143,7 @@ public class MarketAccount {
             Commodity commodity = JustMarket.getTradeManager().getCommodity(key, TradeType.Buy);
             if (commodity.isExpire()) {
                 this.unShelveBuyCommodity(key);
+                new MarketCommodityExpiredEvent(Bukkit.getPlayer(this.uuid), commodity);
                 MailNotify.sendBuyFailure(this.uuid, commodity.getItemID(), commodity.getAmount(), (int) commodity.getPrice());
             }
         });

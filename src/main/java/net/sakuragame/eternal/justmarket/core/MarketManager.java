@@ -3,6 +3,8 @@ package net.sakuragame.eternal.justmarket.core;
 import com.taylorswiftcn.megumi.uifactory.generate.function.Statements;
 import net.sakuragame.eternal.dragoncore.network.PacketSender;
 import net.sakuragame.eternal.justmarket.JustMarket;
+import net.sakuragame.eternal.justmarket.api.event.MarketShelveEvent;
+import net.sakuragame.eternal.justmarket.api.event.MarketTradeEvent;
 import net.sakuragame.eternal.justmarket.core.commodity.BuyCommodity;
 import net.sakuragame.eternal.justmarket.core.commodity.Commodity;
 import net.sakuragame.eternal.justmarket.core.commodity.CommodityType;
@@ -207,6 +209,9 @@ public class MarketManager implements TradeManager {
         player.getInventory().addItem(commodity.getItemStack());
         player.sendMessage(ConfigFile.prefix + "购买成功");
 
+        MarketTradeEvent event = new MarketTradeEvent(player, commodity);
+        event.call();
+
         this.sendTradeSuccessStyle(player, commodityUUID);
 
         int buyer = ClientManagerAPI.getUserID(uuid);
@@ -255,6 +260,9 @@ public class MarketManager implements TradeManager {
         GemsEconomyAPI.deposit(uuid, commodity.getPrice());
         player.sendMessage(ConfigFile.prefix + "出售成功");
 
+        MarketTradeEvent event = new MarketTradeEvent(player, commodity);
+        event.call();
+
         this.sendTradeSuccessStyle(player, commodityUUID);
         
         int buyer = ClientManagerAPI.getUserID(uuid);
@@ -284,10 +292,10 @@ public class MarketManager implements TradeManager {
     }
 
     @Override
-    public boolean putSellCommodity(Player player, ItemStack item, double price, int day) {
+    public UUID putSellCommodity(Player player, ItemStack item, double price, int day) {
         UUID uuid = player.getUniqueId();
         int uid = ClientManagerAPI.getUserID(uuid);
-        if (uid == -1) return false;
+        if (uid == -1) return null;
 
         MarketAccount account = JustMarket.getUserManager().getAccount(uuid);
 
@@ -305,14 +313,18 @@ public class MarketManager implements TradeManager {
         account.addSell(commodityUUID);
         this.sellMap.put(commodityUUID, commodity);
         JustMarket.getUpdater().putCommodity(commodityUUID, TradeType.Sell);
-        return true;
+
+        MarketShelveEvent event = new MarketShelveEvent(player, item, amount, price, expire);
+        event.call();
+
+        return commodityUUID;
     }
 
     @Override
-    public boolean putBuyCommodity(Player player, ItemStack item, double price, int day) {
+    public UUID putBuyCommodity(Player player, ItemStack item, double price, int day) {
         UUID uuid = player.getUniqueId();
         int uid = ClientManagerAPI.getUserID(uuid);
-        if (uid == -1) return false;
+        if (uid == -1) return null;
 
         MarketAccount account = JustMarket.getUserManager().getAccount(uuid);
 
@@ -329,7 +341,11 @@ public class MarketManager implements TradeManager {
         account.addBuy(commodityUUID);
         this.buyMap.put(commodityUUID, commodity);
         JustMarket.getUpdater().putCommodity(commodityUUID, TradeType.Buy);
-        return true;
+
+        MarketShelveEvent event = new MarketShelveEvent(player, item, amount, price, expire);
+        event.call();
+
+        return commodityUUID;
     }
 
     @Override

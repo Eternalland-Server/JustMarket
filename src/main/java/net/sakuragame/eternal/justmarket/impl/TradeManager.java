@@ -41,9 +41,9 @@ public interface TradeManager {
 
     boolean tradeBuyCommodity(Player player, UUID commodityUUID);
 
-    boolean putSellCommodity(Player player, ItemStack item, double price, int day);
+    UUID putSellCommodity(Player player, ItemStack item, double price, int day);
 
-    boolean putBuyCommodity(Player player, ItemStack item, double price, int day);
+    UUID putBuyCommodity(Player player, ItemStack item, double price, int day);
 
     void addSellLock(UUID uuid);
 
